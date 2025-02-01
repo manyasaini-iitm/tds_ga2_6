@@ -14,6 +14,9 @@ with open('q-vercel-python.json') as f:
     student_marks = json.load(f)
 
 @app.get("/api")
-async def get_marks():
-    marks = [student_marks.get(n,0) for n in name]
-    return {"marks":marks}
+async def get_marks(name:list[str]=Query(None)):
+    if name:
+        result = [student["marks"] for student in student_marks if student["name"] in name]
+        return {"marks":result}
+    
+    return {"marks":[]}
